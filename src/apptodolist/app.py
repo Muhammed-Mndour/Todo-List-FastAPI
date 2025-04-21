@@ -2,7 +2,7 @@ import logging
 
 from fastapi import FastAPI
 
-from util import util
+from utils import util
 
 logger = logging.getLogger(__name__)
 
