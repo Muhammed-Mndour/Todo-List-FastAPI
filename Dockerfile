@@ -5,7 +5,7 @@ EXPOSE 8080
 
 RUN apt-get update && apt-get install -y curl make && rm -rf /var/lib/apt/lists/*
 
-RUN pip install uv==0.5.9
+RUN pip install uv==0.6.14
 
 COPY uv.lock /src/
 COPY pyproject.toml /src/
