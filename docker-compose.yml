@@ -1,3 +1,5 @@
+name: fastapi-boilerplate
+
 services:
   app:
     build:
