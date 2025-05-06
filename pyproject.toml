@@ -19,7 +19,10 @@ dependencies = [
     "mysqlclient==2.1.1",
     "sqlparse<1.0.0,>=0.5.1",
     "mo-sql-parsing<9.0.0,>=8.146.22081",
-    "jsql==0.8",
+    "jsql==0.9",
+    # Development and Testing Tools
+    "pytest==8.3.3",
+    "httpx==0.24.1",
     # Utility Libraries
     "pyhumps<4.0.0,>=3.1.0",
     "jinja2<4.0.0,>=3.1.2"
