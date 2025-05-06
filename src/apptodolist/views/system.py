@@ -1,9 +1,9 @@
 from fastapi import APIRouter
-from fastapi.responses import Response
+from fastapi.responses import JSONResponse
 
 router = APIRouter()
 
 
 @router.get('/hc')
 def health_check():
-    return Response("OK", status_code=200)
+    return JSONResponse("OK", status_code=200)
