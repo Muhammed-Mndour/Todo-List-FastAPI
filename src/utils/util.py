@@ -10,7 +10,7 @@ IS_TESTING = os.getenv('TESTING') == 'pytest'
 
 
 class BaseModel(pydantic.BaseModel):
-    class Config:
+    class ConfigDict:
         use_enum_values = True
         populate_by_name = True
         alias_generator = camelize
