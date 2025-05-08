@@ -1,16 +1,4 @@
 name: dev-env
 
-services:
-  mysqldb:
-    image: mysql:8.0
-    container_name: mysql8
-    command: [ "--character-set-server=utf8mb4", "--collation-server=utf8mb4_0900_ai_ci" ]
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-    ports:
-      - "33006:3306"
-    volumes:
-      - mysql_data:/var/lib/mysql
-
-volumes:
-  mysql_data:
+include:
+  - path: services/mysql8.yml
