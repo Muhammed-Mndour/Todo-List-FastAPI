@@ -5,8 +5,12 @@ sub_help() {
 	declare -F | grep sub | awk '{print $3}' | cut -c 5- | awk '{print " * " $0}' | awk 'length($0)>4'
 }
 
-get_app_name() {
-	echo $(yq '.services.app.container_name' docker-compose.yml)
+get_container_name() {
+  path=$(yq '.include[0].path' docker-compose.yml)
+	service=$(yq '.services|keys|.[0]' ${path})
+	container_name=$(docker-compose ps ${service} --format "{{.Names}}")
+	container_id=$(docker-compose ps ${service} -q)
+  echo ${container_name}
 }
 
 sub_env_up() {
@@ -47,14 +51,15 @@ sub_t() {
 }
 
 sub_in() {
-	echo -e "${yel} Diving inside app container...${end}"
-	docker exec -it $(get_app_name) bash
+  container_name=$(get_container_name)
+	echo -e "${yel} Diving inside app container ${container_name}...${end}"
+	docker exec -it ${container_name} bash
 }
 
-
 sub_exec() {
-	echo -e "${yel}Executing command $1 inside container...${end}"
-	docker exec -it $(get_app_name) $@
+  container_name=$(get_container_name)
+	echo -e "${yel}Executing command $1 inside container ${container_name}...${end}"
+	docker exec -it ${container_name} $@
 }
 
 sub_x() {
