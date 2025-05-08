@@ -2,6 +2,8 @@ services:
   mysqldb:
     image: mysql:8.0
     command: [ "--character-set-server=utf8mb4", "--collation-server=utf8mb4_0900_ai_ci" ]
+    networks:
+      - shared-network
     ports:
       - "33006:3306"
     volumes:

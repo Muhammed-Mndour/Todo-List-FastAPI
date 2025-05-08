@@ -4,6 +4,8 @@ services:
       context: .
       dockerfile: Dockerfile
     restart: always
+    networks:
+      - shared-network
     environment:
       ENV: "dev"
       SQLALCHEMY_SILENCE_UBER_WARNING: 1

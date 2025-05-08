@@ -2,3 +2,7 @@ name: fastapi-boilerplate
 
 include:
   - path: compose/apptodolist.yml
+
+networks:
+  shared-network:
+    name: dev-env-network
