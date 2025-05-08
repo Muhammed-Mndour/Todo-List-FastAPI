@@ -73,6 +73,19 @@ sub_x() {
 	sub_exec $@
 }
 
+sub_cp_in() {
+  container_name=$(get_container_name)
+	echo -e "${yel}Copying \"$1\" from host to \"$2\" on container ${container_name}...${end}"
+	docker cp $1 ${container_name}:$2
+
+}
+
+sub_cp_out() {
+  container_name=$(get_container_name)
+	echo -e "${yel}Copying \"$1\" from container ${container_name} to \"$2\" on host...${end}"
+	docker cp ${container_name}:$1 $2
+}
+
 red=$'\e[1;31m'
 grn=$'\e[1;32m'
 yel=$'\e[1;33m'
