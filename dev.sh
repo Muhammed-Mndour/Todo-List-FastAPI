@@ -10,6 +10,13 @@ get_container_name() {
 	service=$(yq '.services|keys|.[0]' ${path})
 	container_name=$(docker-compose ps ${service} --format "{{.Names}}")
 	container_id=$(docker-compose ps ${service} -q)
+
+  if [[ -z "${container_name}" ]]; then
+    echo -e "${red}Error: No running container found for service '${service}'.${end}"
+    echo -e "${yel}Make sure to start the containers with 'dev up' first.${end}"
+    exit 1
+  fi
+
   echo ${container_name}
 }
 
@@ -58,7 +65,7 @@ sub_in() {
 
 sub_exec() {
   container_name=$(get_container_name)
-	echo -e "${yel}Executing command $1 inside container ${container_name}...${end}"
+	echo -e "${yel}Executing command \"$@\" inside container ${container_name}...${end}"
 	docker exec -it ${container_name} $@
 }
 
