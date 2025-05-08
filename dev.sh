@@ -9,14 +9,32 @@ get_app_name() {
 	echo $(yq '.services.app.container_name' docker-compose.yml)
 }
 
+sub_env_up() {
+	echo -e "${yel} Running env docker-compose up...${end}"
+	docker-compose -f ./dev-env/docker-compose.yml up -w --build --force-recreate --remove-orphans
+}
+
 sub_up() {
-	echo -e "${yel} Running docker-compose up...${end}"
-	docker-compose up -w --build --force-recreate --remove-orphans
+  if [[ "$1" == "--env" ]]; then
+    sub_env_up
+  else
+  	echo -e "${yel} Running docker-compose up...${end}"
+	  docker-compose up -w --build --force-recreate --remove-orphans
+  fi
+}
+
+sub_env_down() {
+  echo -e "${yel} Running env docker-compose down...${end}"
+  docker-compose -f ./dev-env/docker-compose.yml down
 }
 
 sub_down() {
-	echo -e "${yel} Running docker-compose down...${end}"
-	docker-compose down
+  if [[ "$1" == "--env" ]]; then
+    sub_env_down
+  else
+  	echo -e "${yel} Running docker-compose down...${end}"
+	  docker-compose down
+  fi
 }
 
 sub_test() {
