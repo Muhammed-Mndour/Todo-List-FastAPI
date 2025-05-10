@@ -53,3 +53,4 @@ allow-direct-references = true
 line-length = 120
 target-version = ["py313"]
 skip-string-normalization = true
+skip-magic-trailing-comma = false
