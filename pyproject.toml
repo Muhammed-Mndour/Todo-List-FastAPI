@@ -27,6 +27,7 @@ dependencies = [
     "pyhumps<4.0.0,>=3.1.0",
     "jinja2<4.0.0,>=3.1.2",
     "pylint>=3.3.7",
+    "black>=25.1.0",
 ]
 
 # UV Python Preferences
@@ -47,3 +48,8 @@ packages = ["src"]
 [tool.hatch.metadata]
 # Allow direct references to internal packages
 allow-direct-references = true
+
+[tool.black]
+line-length = 120
+target-version = ["py313"]
+skip-string-normalization = true
