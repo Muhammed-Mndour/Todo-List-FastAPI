@@ -12,4 +12,3 @@ class DomainException(Exception):
         self.error_code = error_code
         self.context = context
         super().__init__(self.message)
-

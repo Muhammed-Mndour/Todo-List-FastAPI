@@ -9,8 +9,8 @@ logger = logging.getLogger(__name__)
 
 def create_app():
     app_params = {
-        "title": f"To-Do List Public API",
-        "description": f"To-Do List Public API",
+        "title": "To-Do List Public API",
+        "description": "To-Do List Public API",
         "version": "1.0.0",
         "docs_url": '/swagger',
         "redoc_url": '/docs',
