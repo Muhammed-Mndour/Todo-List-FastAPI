@@ -7,12 +7,10 @@ RUN apt-get update  \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-RUN pip install uv==0.6.14
+COPY uv.lock pyproject.toml /src/
 
-COPY uv.lock /src/
-COPY pyproject.toml /src/
-
-RUN uv sync
+RUN pip install uv==0.6.14 \
+    && uv sync
 
 FROM python:3.13-slim AS runtime
 WORKDIR /src
@@ -26,8 +24,8 @@ RUN apt-get update  \
 RUN pip install uv==0.6.14
 
 COPY --from=builder /src/.venv /src/.venv
-
 COPY . /src
+
 RUN chmod +x /src/bin/run.sh
 
 ENV PYTHONPATH="${PYTHONPATH}:/src/src"
