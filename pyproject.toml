@@ -23,11 +23,12 @@ dependencies = [
     # Development and Testing Tools
     "pytest==8.3.3",
     "httpx==0.24.1",
+    "pylint>=3.3.7",
+    "black>=25.1.0",
+    "pre-commit>=4.2.0",
     # Utility Libraries
     "pyhumps<4.0.0,>=3.1.0",
     "jinja2<4.0.0,>=3.1.2",
-    "pylint>=3.3.7",
-    "black>=25.1.0",
 ]
 
 # UV Python Preferences
