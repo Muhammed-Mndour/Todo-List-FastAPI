@@ -9,8 +9,8 @@ from sqlalchemy.exc import DatabaseError
 from sqlalchemy.exc import IntegrityError, OperationalError
 from starlette.responses import JSONResponse
 
-from domaintodolist.exceptions import DomainException, GenericException
-from domaintodolist.messages.common import ErrorResponse
+from libtodolist.exceptions import DomainException, GenericException
+from libtodolist.messages.common import ErrorResponse
 
 
 def generate_custom_exception_handler(

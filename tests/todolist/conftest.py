@@ -1,16 +1,14 @@
 import pytest
 
-from utils import engines
-
 
 @pytest.fixture(scope="session", autouse=True)
 def engine_todolist():
-    engine = engines.get_engine('todolist')
+    import libtodolist
+
+    engine = libtodolist.data.engine_todolist
     assert engine.url.database == f'todolist'
 
-    from repositorytodolist import models
-
-    models.tables.create_all()
+    libtodolist.data.models.tables.create_all()
 
     return engine
 
