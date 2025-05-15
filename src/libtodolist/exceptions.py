@@ -1,4 +1,4 @@
-class GenericException(Exception):
+class ServerException(Exception):
     def __init__(self, message=None, error_code=None, *, context=None):
         self.message = message
         self.error_code = error_code
@@ -6,7 +6,7 @@ class GenericException(Exception):
         super().__init__(self.message)
 
 
-class DomainException(Exception):
+class ClientException(Exception):
     def __init__(self, message=None, error_code=None, *, context=None):
         self.message = message
         self.error_code = error_code

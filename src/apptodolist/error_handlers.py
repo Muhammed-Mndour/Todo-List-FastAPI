@@ -9,7 +9,7 @@ from sqlalchemy.exc import DatabaseError
 from sqlalchemy.exc import IntegrityError, OperationalError
 from starlette.responses import JSONResponse
 
-from libtodolist.exceptions import DomainException, GenericException
+from libtodolist.exceptions import ClientException, ServerException
 from libtodolist.messages.common import ErrorResponse
 
 
@@ -61,8 +61,8 @@ def register_error_handlers(app):
 
     app.add_exception_handler(RequestValidationError, err_handler_req_validation)
     app.add_exception_handler(AssertionError, err_handler_assertion)
-    app.add_exception_handler(DomainException, err_handler_400)
-    app.add_exception_handler(GenericException, err_handler_500)
+    app.add_exception_handler(ClientException, err_handler_400)
+    app.add_exception_handler(ServerException, err_handler_500)
     app.add_exception_handler(IntegrityError, err_handler_integrity)
     app.add_exception_handler(ResponseValidationError, err_handler_500)
     app.add_exception_handler(DatabaseError, err_handler_500)
