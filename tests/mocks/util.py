@@ -2,7 +2,7 @@ from unittest import mock
 
 import pytest
 
-from utils import util
+from libutil import util
 
 
 def register_mock(mock_path):

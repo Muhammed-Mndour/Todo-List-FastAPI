@@ -2,7 +2,7 @@ import logging
 
 from fastapi import FastAPI
 
-from utils import util
+from libutil import util
 
 logger = logging.getLogger(__name__)
 

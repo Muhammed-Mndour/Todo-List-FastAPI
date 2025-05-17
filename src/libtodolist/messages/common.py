@@ -2,7 +2,7 @@ from typing import Optional
 
 from pydantic import Field
 
-from utils.util import BaseModel
+from libutil.util import BaseModel
 
 
 class ResponseBaseModel(BaseModel):

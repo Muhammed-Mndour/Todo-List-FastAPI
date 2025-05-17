@@ -4,7 +4,7 @@ from .mocks import *  # NOQA (including mock test fixtures)
 
 os.environ['TESTING'] = 'pytest'
 
-from utils import engines, util
+from libutil import engines, util
 
 
 def setup_engine_env(*engine_names):
