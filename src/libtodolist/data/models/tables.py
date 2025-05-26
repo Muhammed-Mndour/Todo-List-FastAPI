@@ -38,7 +38,7 @@ class User(Model):
     __tablename__ = 'user'
 
     id_user = sa.Column(INT, primary_key=True)
-    code = sa.Column(sa.String(50), nullable=False)
+    code = sa.Column(sa.String(50), nullable=False, unique=True)
 
     created_at = sa.Column(types.TIMESTAMP, server_default=text('CURRENT_TIMESTAMP'), nullable=False, index=True)
     updated_at = sa.Column(
@@ -53,9 +53,10 @@ class Category(Model):
     __tablename__ = 'category'
 
     id_category = sa.Column(INT, primary_key=True)
-    code = sa.Column(sa.String(50), nullable=False)
+    id_user = sa.Column(INT, nullable=False, index=True)
+    code = sa.Column(sa.String(50), nullable=False, unique=True)
     label = sa.Column(sa.String(50), nullable=False)
-    is_active = sa.Column(TINYINT, nullable=False, server_default='1')
+    is_active = sa.Column(TINYINT, nullable=False, server_default='1', index=True)
 
     created_at = sa.Column(types.TIMESTAMP, server_default=text('CURRENT_TIMESTAMP'), nullable=False, index=True)
     updated_at = sa.Column(
@@ -70,14 +71,15 @@ class Task(Model):
     __tablename__ = 'task'
 
     id_task = sa.Column(INT, primary_key=True)
-    code = sa.Column(sa.String(50), nullable=False)
-    id_category = sa.Column(INT, nullable=True)
+    code = sa.Column(sa.String(50), nullable=False, unique=True)
+    id_user = sa.Column(INT, nullable=False, index=True)
+    id_category = sa.Column(INT, nullable=True, index=True)
     title = sa.Column(sa.String(100), nullable=False)
     description = sa.Column(sa.String(255), nullable=True)
     priority = sa.Column(TINYINT, nullable=False, server_default='1')
     due_date = sa.Column(types.DATE, nullable=True)
-    id_status = sa.Column(INT, nullable=False)
-    is_active = sa.Column(TINYINT, nullable=False, server_default='1')
+    id_status = sa.Column(INT, nullable=False, index=True)
+    is_active = sa.Column(TINYINT, nullable=False, server_default='1', index=True)
 
     created_at = sa.Column(types.TIMESTAMP, server_default=text('CURRENT_TIMESTAMP'), nullable=False, index=True)
     updated_at = sa.Column(
@@ -92,7 +94,7 @@ class Status(Model):
     __tablename__ = 'status'
 
     id_status = sa.Column(INT, primary_key=True)
-    code = sa.Column(sa.String(50), nullable=False)
+    code = sa.Column(sa.String(50), nullable=False, unique=True)
     label = sa.Column(sa.String(50), nullable=True)
 
     created_at = sa.Column(types.TIMESTAMP, server_default=text('CURRENT_TIMESTAMP'), nullable=False, index=True)

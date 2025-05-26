@@ -9,7 +9,7 @@ from sqlalchemy.exc import DatabaseError
 from sqlalchemy.exc import IntegrityError, OperationalError
 from starlette.responses import JSONResponse
 
-from libtodolist.exceptions import ClientException, ServerException
+from libtodolist.exceptions import ServerException, ClientException
 from libtodolist.messages.common import ErrorResponse
 
 
@@ -24,7 +24,9 @@ def generate_custom_exception_handler(
         error_message = (
             exception.message if hasattr(exception, "message") and exception.message else None
         ) or client_error_msg
-        error_code = (exception.error_code if hasattr(exception, "error_code") else None) or status_code
+
+        response_status_code = (exception.status_code if hasattr(exception, "status_code") else None) or status_code
+        error_code = (exception.error_code if hasattr(exception, "error_code") else None) or response_status_code
 
         error_details = {
             'message': error_message,
@@ -36,7 +38,7 @@ def generate_custom_exception_handler(
 
         content = ErrorResponse(**error_details).model_dump(exclude_none=True)
 
-        return JSONResponse(content=content, status_code=status_code)
+        return JSONResponse(content=content, status_code=response_status_code)
 
     return err_handler
 
@@ -47,13 +49,13 @@ def register_error_handlers(app):
         status_code=400, client_error_message=str, include_traceback=app.debug
     )
     err_handler_integrity = generate_custom_exception_handler(
-        status_code=400, client_error_message=str, include_traceback=app.debug
-    )
-    err_handler_assertion = generate_custom_exception_handler(
-        status_code=400, client_error_message=str, include_traceback=app.debug
+        status_code=400, client_error_message="Already taken!", include_traceback=app.debug
     )
     err_handler_http = generate_custom_exception_handler(
         status_code=400, client_error_message=lambda exc: exc.detail, include_traceback=app.debug
+    )
+    err_handler_assertion = generate_custom_exception_handler(
+        status_code=500, client_error_message=str, include_traceback=app.debug
     )
     err_handler_500 = generate_custom_exception_handler(
         status_code=500, client_error_message="Sorry, something went wrong on our side", include_traceback=app.debug

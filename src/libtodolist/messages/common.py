@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List, Union
 
 from pydantic import Field
 
@@ -9,7 +9,7 @@ class ResponseBaseModel(BaseModel):
     success: bool
     code: int = 200
     message: Optional[str] = Field(default_factory=str)
-    data: list[dict] = Field(default_factory=list)
+    data: Union[dict, List[dict]] = Field(default_factory=dict)
 
 
 class ErrorResponse(ResponseBaseModel):

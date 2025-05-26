@@ -1,39 +1,49 @@
 from fastapi import APIRouter, Depends
 
 from libtodolist import domain
-from libtodolist.context import UserContext
-from libtodolist.data import engine_todolist
-from libutil.database_session import Session
-from .dependencies import get_user_context
+from libtodolist.context import RequestContext
+from libtodolist.db_session import TodolistSession
+from libtodolist.messages.category import GetCategoriesResponse
+from libtodolist.messages.common import ResponseBaseModel
+from .dependencies import get_request_context
 
 router = APIRouter()
 
 
 @router.get('/categories')
-def get_categories():
-    return []
+def get_categories(
+    ctx: RequestContext = Depends(get_request_context),
+):
+    with TodolistSession() as session:
+        categories = domain.category.GetCategories().execute(ctx, session)
+    return GetCategoriesResponse(success=True, data=categories)
 
 
 @router.post('/categories')
 def add_category(
-    req: domain.category.AddCategory,
-    user_context: UserContext = Depends(get_user_context(required=True)),
+    msg: domain.category.AddCategory,
+    ctx: RequestContext = Depends(get_request_context),
 ):
-    with Session(engine_todolist) as session:
-        response = req.execute(user_context, session)
-    return response
+    with TodolistSession() as session:
+        msg.execute(ctx, session)
+    return ResponseBaseModel(success=True, message="Category added successfully!")
 
 
-@router.put('/categories')
-def update_category():
-    return [
-        {
-            'name': "Category 1",
-        },
-        {
-            'name': "Category 2",
-        },
-        {
-            'name': "Category 3",
-        },
-    ]
+@router.put('/categories/{code}')
+def update_category(
+    msg: domain.category.UpdateCategory = Depends(),
+    ctx: RequestContext = Depends(get_request_context),
+):
+    with TodolistSession() as session:
+        msg.execute(ctx, session)
+    return ResponseBaseModel(success=True, message="Category updated successfully!")
+
+
+@router.delete('/categories/{code}')
+def delete_category(
+    msg: domain.category.DeleteCategory = Depends(),
+    ctx: RequestContext = Depends(get_request_context),
+):
+    with TodolistSession() as session:
+        msg.execute(ctx, session)
+    return ResponseBaseModel(success=True, message="Category deleted successfully!")

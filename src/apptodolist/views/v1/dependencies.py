@@ -1,21 +1,17 @@
 from fastapi import Header, Request
 from fastapi.exceptions import HTTPException
 
-from libtodolist.context import UserContext
+from libtodolist.context import RequestContext
 
 
-def get_user_context(required: bool = True):
-    """
-    Factory function that returns a dependency function
-    with a configurable requirement for user code
-    """
-
-    def _get_user_context(user_code: str = Header(alias='X-User-Code', default=None)):
-        if required and not user_code:
-            raise HTTPException(status_code=401, detail="User code is required")
-        return UserContext(code=user_code)
-
-    return _get_user_context
+def get_request_context(
+    user_code: str = Header(
+        alias='X-User-Code',
+        default=None,
+        include_in_schema=True,
+    )
+):
+    return RequestContext.from_todolist_service(user_code=user_code)
 
 
 def get_some_header(required: bool = True):

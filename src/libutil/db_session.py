@@ -1,16 +1,14 @@
-from libtodolist.exceptions import ServerException
-
-
 class Session:
     precommit_hooks: dict = {}
     isolation_level: str = None
     conn = None
 
-    def __init__(self, engine, **kwargs):
+    def __init__(self, engine, isolation_level=None, **kwargs):
         if not engine:
-            raise ServerException('Engine is required to create a session')
+            raise Exception('Engine is required to create a session')
 
         self.engine = engine
+        self.isolation_level = isolation_level
 
     def __enter__(self):
         if self.isolation_level:
