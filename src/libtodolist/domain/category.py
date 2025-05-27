@@ -10,7 +10,7 @@ from libutil.util import BaseModel
 class GetCategories(BaseModel):
 
     def execute(self, ctx, session):
-        categories = entities.category.get_categories(session.conn, ctx.id_user)
+        categories = entities.category.get_all_user_categories(session.conn, ctx.id_user)
 
         return categories
 
@@ -43,7 +43,7 @@ class UpdateCategory(BaseModel):
     def execute(self, ctx, session):
         self._validate(session.conn, ctx.id_user)
 
-        entities.category.update_category(session.conn, self.code, self.category.label)
+        entities.category.update_category_by_code(session.conn, self.code, self.category.label)
 
     def _validate(self, conn, id_user):
         category = entities.category.get_by_code(conn, self.code, is_active=True)
@@ -61,7 +61,7 @@ class DeleteCategory(BaseModel):
     def execute(self, ctx, session):
         self._validate(session.conn, ctx.id_user)
 
-        entities.category.delete_category(session.conn, self.code)
+        entities.category.delete_category_by_code(session.conn, self.code)
 
     def _validate(self, conn, id_user):
         category = entities.category.get_by_code(conn, self.code, is_active=True)

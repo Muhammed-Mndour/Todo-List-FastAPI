@@ -14,7 +14,7 @@ def insert_category(conn, id_user, code, label):
     insert_row(conn, tables.Category, row)
 
 
-def get_categories(conn, id_user):
+def get_all_user_categories(conn, id_user):
     return sql(
         conn,
         '''
@@ -61,7 +61,7 @@ def get_by_code(conn, code, is_active=False):
 
 
 # TODO: add update in sqlutil
-def update_category(conn, code, label):
+def update_category_by_code(conn, code, label):
     sql(
         conn,
         '''
@@ -74,7 +74,7 @@ def update_category(conn, code, label):
     )
 
 
-def delete_category(conn, code):
+def delete_category_by_code(conn, code):
     sql(
         conn,
         '''
