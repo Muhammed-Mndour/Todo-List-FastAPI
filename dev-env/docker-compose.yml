@@ -1,0 +1,8 @@
+name: dev-env
+
+include:
+  - path: services/mysql8.yml
+
+networks:
+  shared-network:
+    name: dev-env-network

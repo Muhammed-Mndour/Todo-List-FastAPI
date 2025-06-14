@@ -1,2 +1,3 @@
 # fastapi-boilerplate
+
 FastAPI Boilerplate

@@ -1,0 +1,58 @@
+# Project Metadata
+[project]
+name = "fastapi-boilerplate"
+version = "0.1.0"
+description = ""
+
+# Python Version Compatibility
+requires-python = ">=3.13"
+
+# Project Dependencies
+dependencies = [
+    # Web Servers and ASGI
+    "uvicorn==0.20.0",
+    "gunicorn<21.0.0,>=20.0.4",
+    "fastapi<1.0.0,>=0.114.2",
+    # Database and ORM
+    "SQLAlchemy<2.0.0,>=1.4.26",
+    "aiomysql<1.0.0,>=0.0.22",
+    "mysqlclient==2.1.1",
+    "sqlparse<1.0.0,>=0.5.1",
+    "mo-sql-parsing<9.0.0,>=8.146.22081",
+    "jsql==0.9",
+    # Development and Testing Tools
+    "pytest==8.3.3",
+    "httpx==0.24.1",
+    "pylint>=3.3.7",
+    "black>=25.1.0",
+    "pre-commit>=4.2.0",
+    # Utility Libraries
+    "pyhumps<4.0.0,>=3.1.0",
+    "jinja2<4.0.0,>=3.1.2",
+    "requests>=2.32.4",
+]
+
+# UV Python Preferences
+[tool.uv]
+python-preference = "only-system"
+
+# Build System Configuration
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+# Hatch Build Configuration
+[tool.hatch.build]
+# Specify source package directory
+packages = ["src"]
+
+# Hatch Metadata Configuration
+[tool.hatch.metadata]
+# Allow direct references to internal packages
+allow-direct-references = true
+
+[tool.black]
+line-length = 120
+target-version = ["py313"]
+skip-string-normalization = true
+skip-magic-trailing-comma = false

@@ -1,0 +1,24 @@
+services:
+  standard-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    networks:
+      - shared-network
+    environment:
+      ENV: "dev"
+      SQLALCHEMY_SILENCE_UBER_WARNING: 1
+    develop:
+      watch:
+        - action: sync
+          path: .
+          target: /src/
+        - action: rebuild
+          path: Dockerfile
+        - action: rebuild
+          path: pyproject.toml
+        - action: rebuild
+          path: uv.lock
+        - action: rebuild
+          path: common-config.yml
