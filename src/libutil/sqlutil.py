@@ -1,8 +1,5 @@
-from sqlalchemy.ext.declarative import declarative_base
-
-Base = declarative_base()
-
 from typing import Dict, Type, Optional, Any
+
 from jsql import sql
 from sqlalchemy.ext.declarative import declarative_base
 
