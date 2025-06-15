@@ -3,7 +3,7 @@ from fastapi import APIRouter
 router = APIRouter()
 
 
-@router.get('/tasks')
+@router.get('')
 def get_tasks():
     return [
         {

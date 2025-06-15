@@ -3,7 +3,7 @@ from fastapi import APIRouter
 router = APIRouter()
 
 
-@router.get('/categories')
+@router.get('')
 def get_categories():
     return [
         {
