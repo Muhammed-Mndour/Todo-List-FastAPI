@@ -8,8 +8,8 @@ sub_help() {
 get_container_name() {
   path=$(yq '.include[0].path' docker-compose.yml)
 	service=$(yq '.services|keys|.[0]' ${path})
-	container_name=$(docker-compose ps ${service} --format "{{.Names}}")
-	container_id=$(docker-compose ps ${service} -q)
+	container_name=$(docker compose ps ${service} --format "{{.Names}}")
+	container_id=$(docker compose ps ${service} -q)
 
   if [[ -z "${container_name}" ]]; then
     echo -e "${red}Error: No running container found for service '${service}'.${end}"
@@ -21,30 +21,30 @@ get_container_name() {
 }
 
 sub_env_up() {
-	echo -e "${yel} Running env docker-compose up...${end}"
-	docker-compose -f ./dev-env/docker-compose.yml up -w --build --force-recreate --remove-orphans
+	echo -e "${yel} Running env docker compose up...${end}"
+	docker compose -f ./dev-env/docker-compose.yml up -w --build --force-recreate --remove-orphans
 }
 
 sub_up() {
   if [[ "$1" == "--env" ]]; then
     sub_env_up
   else
-  	echo -e "${yel} Running docker-compose up...${end}"
-	  docker-compose up -w --build --force-recreate --remove-orphans
+  	echo -e "${yel} Running docker compose up...${end}"
+	  docker compose up -w --build --force-recreate --remove-orphans
   fi
 }
 
 sub_env_down() {
-  echo -e "${yel} Running env docker-compose down...${end}"
-  docker-compose -f ./dev-env/docker-compose.yml down
+  echo -e "${yel} Running env docker compose down...${end}"
+  docker compose -f ./dev-env/docker-compose.yml down
 }
 
 sub_down() {
   if [[ "$1" == "--env" ]]; then
     sub_env_down
   else
-  	echo -e "${yel} Running docker-compose down...${end}"
-	  docker-compose down
+  	echo -e "${yel} Running docker compose down...${end}"
+	  docker compose down
   fi
 }
 
