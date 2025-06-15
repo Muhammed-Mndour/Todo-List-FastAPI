@@ -10,7 +10,7 @@ from .dependencies import get_request_context
 router = APIRouter()
 
 
-@router.get('/categories')
+@router.get('')
 def get_categories(
     ctx: RequestContext = Depends(get_request_context),
 ):
@@ -19,7 +19,7 @@ def get_categories(
     return GetCategoriesResponse(success=True, data=categories)
 
 
-@router.post('/categories')
+@router.post('')
 def add_category(
     msg: domain.category.AddCategory,
     ctx: RequestContext = Depends(get_request_context),
@@ -29,7 +29,7 @@ def add_category(
     return ResponseBaseModel(success=True, message="Category added successfully!")
 
 
-@router.put('/categories/{code}')
+@router.put('/{code}')
 def update_category(
     msg: domain.category.UpdateCategory = Depends(),
     ctx: RequestContext = Depends(get_request_context),
@@ -39,7 +39,7 @@ def update_category(
     return ResponseBaseModel(success=True, message="Category updated successfully!")
 
 
-@router.delete('/categories/{code}')
+@router.delete('/{code}')
 def delete_category(
     msg: domain.category.DeleteCategory = Depends(),
     ctx: RequestContext = Depends(get_request_context),
