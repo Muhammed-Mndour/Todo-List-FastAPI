@@ -22,9 +22,9 @@ def create_engine(name, url, **create_engine_kwargs):
         'pool_recycle': 600,
     }
 
-    create_engine_kwargs.update(default_kwargs)
+    default_kwargs.update(create_engine_kwargs)
 
-    engine = sqlalchemy.create_engine(url, **create_engine_kwargs)
+    engine = sqlalchemy.create_engine(url, **default_kwargs)
 
     ENGINES[name] = engine
 

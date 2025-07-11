@@ -19,7 +19,6 @@ class AddCategory(BaseModel):
     label: str
 
     @field_validator('label')
-    @classmethod
     def validate_label(cls, value: str) -> str:
         if not value.isalnum():
             raise ValueError('label must be alphanumeric')

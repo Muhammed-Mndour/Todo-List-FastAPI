@@ -7,14 +7,14 @@ class Session:
         if not engine:
             raise Exception('Engine is required to create a session')
 
-        self.engine = engine
+        self._engine = engine
         self.isolation_level = isolation_level
 
     def __enter__(self):
         if self.isolation_level:
-            self.conn = self.engine.connect().execution_options(isolation_level=self.isolation_level)
+            self.conn = self._engine.connect().execution_options(isolation_level=self.isolation_level)
         else:
-            self.conn = self.engine.connect()
+            self.conn = self._engine.connect()
 
         self._transaction = self.conn.begin()
         self._transaction.__enter__()
