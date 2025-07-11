@@ -22,7 +22,7 @@ get_container_name() {
 
 sub_env_up() {
 	echo -e "${yel} Running env docker compose up...${end}"
-	docker compose -f ./dev-env/docker-compose.yml up -w --build --force-recreate --remove-orphans
+	docker compose -f ./dev-env/docker-compose.yml up --build --force-recreate --remove-orphans
 }
 
 sub_up() {
