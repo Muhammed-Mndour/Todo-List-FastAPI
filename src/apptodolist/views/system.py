@@ -1,9 +1,10 @@
 from fastapi import APIRouter
-from fastapi.responses import JSONResponse
+
+from libtodolist.messages.common import ResponseBaseModel
 
 router = APIRouter()
 
 
 @router.get('/hc')
 def health_check():
-    return JSONResponse("OK", status_code=200)
+    return ResponseBaseModel(success=True, message="Health check passed!")
