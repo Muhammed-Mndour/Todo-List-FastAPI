@@ -75,7 +75,7 @@ class Task(Model):
     id_category = sa.Column(INT, nullable=True, index=True)
     title = sa.Column(sa.String(100), nullable=False)
     description = sa.Column(sa.String(255), nullable=True)
-    priority = sa.Column(TINYINT, nullable=False, server_default='1')
+    id_priority = sa.Column(TINYINT, nullable=False, server_default='1')
     due_date = sa.Column(types.DATE, nullable=True)
     id_status = sa.Column(INT, nullable=False, index=True)
     is_active = sa.Column(TINYINT, nullable=False, server_default='1', index=True)
@@ -103,3 +103,16 @@ class Status(Model):
         nullable=False,
         index=True,
     )
+class Priority(Model):
+    __tablename__ = 'priority'
+
+    id_priority = sa.Column(INT, primary_key=True)
+    code = sa.Column(sa.String(50), nullable=False, unique=True)
+    label = sa.Column(sa.String(50), nullable=True)
+
+
+
+
+
+
+
