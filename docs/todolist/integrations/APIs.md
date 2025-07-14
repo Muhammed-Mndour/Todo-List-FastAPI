@@ -232,3 +232,57 @@ DELETE /v1/categories/{code}
 ```
 
 ---
+## Add task
+
+- This API creates a new task for the authenticated user.
+- A unique task code is automatically generated based on the current timestamp.
+
+### Endpoint
+
+```http request
+POST /v1/tasks
+```
+
+### Request Body Parameters
+
+|   Parameter   |  Type  | Required | Description |
+|:-------------:|:------:|:--------:|:-----------:|
+|     title     | String |   Yes    |             |        
+|  description  | String |    No    |             |        
+| priority_code | String |    No    |             |        
+|  status_code  | String |    No    |             |        
+| category_code | String |    No    |             |        
+
+
+### Payload
+
+```json
+{
+  "title": "Home work",
+  "description": "Home work",
+  "priority_code": "High",
+  "status_code": "Pending",
+  "category_code": "C1752504942590"
+}
+```
+
+### Response
+
+```json
+{
+  "success": true,
+  "code": 200,
+  "message": "Task added successfully!",
+  "data": {}
+}
+```
+
+### Error Response
+
+```json
+{
+  "success": false,
+  "code": 400,
+  "message": "title must not be empty"
+}
+```

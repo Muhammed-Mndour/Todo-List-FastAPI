@@ -1,1 +1,1 @@
-from . import category, task, user
+from . import category, task, user,status,priority
