@@ -84,6 +84,12 @@ None
 POST /v1/categories
 ```
 
+### Request Body Parameters
+
+| Parameter |  Type  | Required |                   Description                    |
+|:---------:|:------:|:--------:|:------------------------------------------------:|
+|   label   | String |   Yes    | Category label (must be alphanumeric characters) |
+
 ### Payload
 
 ```json
@@ -91,12 +97,6 @@ POST /v1/categories
   "label": "Work"
 }
 ```
-
-### Request Body Parameters
-
-| Parameter |  Type  | Required |                   Description                    |
-|:---------:|:------:|:--------:|:------------------------------------------------:|
-|   label   | String |   Yes    | Category label (must be alphanumeric characters) |
 
 ### Response
 
@@ -139,6 +139,12 @@ PUT /v1/categories/{code}
 |:---------:|:------:|:--------:|:---------------------------:|
 |   code    | String |   Yes    | Unique code of the category |
 
+### Request Body Parameters
+
+| Parameter |  Type  | Required |    Description     |
+|:---------:|:------:|:--------:|:------------------:|
+|   label   | String |   Yes    | New category label |
+
 ### Payload
 
 ```json
@@ -146,12 +152,6 @@ PUT /v1/categories/{code}
   "label": "Work Tasks"
 }
 ```
-
-### Request Body Parameters
-
-| Parameter |  Type  | Required |    Description     |
-|:---------:|:------:|:--------:|:------------------:|
-|   label   | String |   Yes    | New category label |
 
 ### Response
 
@@ -186,10 +186,9 @@ PUT /v1/categories/{code}
 
 ## Delete Category
 
-- This API soft deletes a category belonging to the authenticated user.
+- This API deletes a category belonging to the authenticated user.
 - Users can only delete categories they own.
 - The category must exist and be active.
-- This is a soft delete operation (sets is_active = 0).
 
 ### Endpoint
 
