@@ -15,6 +15,7 @@ def insert_task(conn, id_user, code, title, description, id_priority, id_status,
     }
     insert_row(conn, tables.Task, row)
 
+
 #
 # def get_all_user_tasks(conn, id_user):
 #     return sql(

@@ -3,6 +3,7 @@ from libutil.util import BaseModel
 from datetime import datetime
 from pydantic import field_validator
 
+
 class AddTask(BaseModel):
     title: str
     description: str
@@ -24,13 +25,11 @@ class AddTask(BaseModel):
 
         print("funnn ", id_status)
         entities.task.insert_task(
-            session.conn, ctx.id_user, code, self.title, self.description,
-            id_priority, id_status, id_category
+            session.conn, ctx.id_user, code, self.title, self.description, id_priority, id_status, id_category
         )
 
     def _generate_task_code(self):
         return f"C{int(datetime.now().timestamp() * 1000)}"
-
 
 
 #

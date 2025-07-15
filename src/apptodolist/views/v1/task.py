@@ -4,8 +4,6 @@
 # - Update Task (update any attribute of task details)
 # - Delete Task
 
-
-
 from fastapi import APIRouter, Depends
 from libtodolist.context import RequestContext
 from src.libtodolist.db_session import TodolistSession
@@ -19,8 +17,8 @@ router = APIRouter()
 
 @router.post('')
 def add_task(
-        msg: domain.task.AddTask,
-        ctx: RequestContext = Depends(get_request_context),
+    msg: domain.task.AddTask,
+    ctx: RequestContext = Depends(get_request_context),
 ):
     with TodolistSession() as session:
         msg.execute(ctx, session)

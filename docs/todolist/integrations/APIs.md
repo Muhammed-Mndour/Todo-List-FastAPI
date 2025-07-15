@@ -232,6 +232,7 @@ DELETE /v1/categories/{code}
 ```
 
 ---
+
 ## Add task
 
 - This API creates a new task for the authenticated user.
@@ -245,14 +246,13 @@ POST /v1/tasks
 
 ### Request Body Parameters
 
-|   Parameter   |  Type  | Required | Description |
-|:-------------:|:------:|:--------:|:-----------:|
-|     title     | String |   Yes    |             |        
-|  description  | String |   Yes    |             |        
-| priority_code | String |   Yes    |             |        
-|  status_code  | String |   Yes    |             |        
-| category_code | String |   Yes    |             |        
-
+|   Parameter   |  Type  | Required |    Description    |
+|:-------------:|:------:|:--------:|:-----------------:|
+|     title     | String |   Yes    |    Task title     |        
+|  description  | String |   Yes    | Task descriptions |        
+| priority_code | String |   Yes    |   Task priority   |        
+|  status_code  | String |   Yes    |    Task state     |        
+| category_code | String |   Yes    |   Task category   |        
 
 ### Payload
 
@@ -286,9 +286,10 @@ POST /v1/tasks
   "message": "title must not be empty"
 }
 ```
----
-## Get Task
 
+---
+
+## Get Task
 
 - This API returns a list of all tasks belonging to the authenticated user.
 - Tasks are filtered by authenticated user and only active tasks are returned.
@@ -300,15 +301,16 @@ POST /v1/tasks
 GET /v1/tasks
 ```
 
-### Request Query Parameters
+### Request Path Parameters
 
 | Parameter |  Type  | Required | Description |
 |:---------:|:------:|:--------:|:-----------:|
-| task_code | String |    No    |             |        
-
+| task_code | String |    No    |  Task Code  |        
 
 ## Response
+
 ### For all tasks
+
 ```json
 {
   "success": true,
@@ -319,24 +321,36 @@ GET /v1/tasks
       "code": "C1752505180985",
       "title": "task1",
       "description": "task1 description",
-      "category_code": "C1752504942590",
-      "category_label": "Personal",
-      "priority_code": "HighCode",
-      "priority_label": "High",
-      "status_code": "PendingCode",
-      "status_label": "Pending",
+      "category": {
+        "code": "C1752504942590",
+        "label": "Personal"
+      },
+      "priority": {
+        "code": "HighCode",
+        "label": "High"
+      },
+      "status": {
+        "code": "PendingCode",
+        "label": "Pending"
+      },
       "due_date": "2025-07-14 14:55:42"
     },
     {
       "code": "C1753405180985",
       "title": "task2",
       "description": "task2 description",
-      "category_code": "C1752504942590",
-      "category_label": "Personal",
-      "priority_code": "LowCode",
-      "priority_label": "Low",
-      "status_code": "CompletedCode",
-      "status_label": "Completed",
+      "category": {
+        "code": "C1752504942590",
+        "label": "Personal"
+      },
+      "priority": {
+        "code": "HighCode",
+        "label": "High"
+      },
+      "status": {
+        "code": "PendingCode",
+        "label": "Pending"
+      },
       "due_date": "2025-07-14 14:55:42"
     }
   ]
@@ -344,6 +358,7 @@ GET /v1/tasks
 ```
 
 ### For a single task
+
 ```json
 {
   "success": true,
@@ -353,16 +368,23 @@ GET /v1/tasks
     "code": "C1752505180985",
     "title": "task1",
     "description": "task1 description",
-    "category_code": "C1752504942590",
-    "category_label": "Personal",
-    "priority_code": "HighCode",
-    "priority_label": "High",
-    "status_code": "PendingCode",
-    "status_label": "Pending",
+    "category": {
+      "code": "C1752504942590",
+      "label": "Personal"
+    },
+    "priority": {
+      "code": "HighCode",
+      "label": "High"
+    },
+    "status": {
+      "code": "PendingCode",
+      "label": "Pending"
+    },
     "due_date": "2025-07-14 14:55:42"
   }
 }
 ```
+
 ### Error Response
 
 ```json
@@ -372,6 +394,7 @@ GET /v1/tasks
   "message": "Sorry, something went wrong on our side"
 }
 ```
+
 ```json
 {
   "success": false,
@@ -379,7 +402,6 @@ GET /v1/tasks
   "message": "Task C1752505180985 not found"
 }
 ```
-
 
 ## Update Task
 
@@ -395,31 +417,31 @@ PUT /v1/tasks/{code}
 
 ### Path Parameters
 
-| Parameter |  Type  | Required |       Description        |
-|:---------:|:------:|:--------:|:------------------------:|
-|   code    | String |   Yes    | Unique code of the Task  |
+| Parameter |  Type  | Required |       Description       |
+|:---------:|:------:|:--------:|:-----------------------:|
+|   code    | String |   Yes    | Unique code of the Task |
 
 ### Request Body Parameters
 
 |   Parameter   |  Type  | Required |      Description       |
 |:-------------:|:------:|:--------:|:----------------------:|
-|     title     | String |   Yes    |     New task title     |
-|  description  | String |   Yes    |  New task description  |
-| category_code | String |   Yes    | New task category_code |
-| priority_code | String |   Yes    | New task priority_code |
-|  status_code  | String |   Yes    |  New task status_code  |
-|   due_date    | String |   Yes    |   New task due_date    |
+|     title     | String |    No    |     New task title     |
+|  description  | String |    No    |  New task description  |
+| category_code | String |    NO    | New task category_code |
+| priority_code | String |    No    | New task priority_code |
+|  status_code  | String |    No    |  New task status_code  |
+|   due_date    | String |    No    |   New task due_date    |
 
 ### Payload
 
 ```json
 {
-      "title": "task2",
-      "description": "task2 description",
-      "category_code": "C1752504942590",
-      "priority_code": "LowCode",
-      "status_code": "CompletedCode",
-      "due_date": "2025-07-14 14:55:42"
+  "title": "task2",
+  "description": "task2 description",
+  "category_code": "C1752504942590",
+  "priority_code": "LowCode",
+  "status_code": "CompletedCode",
+  "due_date": "2025-07-14 14:55:42"
 }
 ```
 
@@ -451,6 +473,7 @@ PUT /v1/tasks/{code}
   "message": "Forbidden action"
 }
 ```
+
 ```json
 {
   "success": false,
@@ -458,6 +481,7 @@ PUT /v1/tasks/{code}
   "message": "Title must not be empty"
 }
 ```
+
 ```json
 {
   "success": false,
@@ -465,6 +489,7 @@ PUT /v1/tasks/{code}
   "message": "Category C1642123456789 does not exist!"
 }
 ```
+
 ```json
 {
   "success": false,
@@ -472,6 +497,7 @@ PUT /v1/tasks/{code}
   "message": "Status C1642123456789 does not exist!"
 }
 ```
+
 ```json
 {
   "success": false,
@@ -479,8 +505,8 @@ PUT /v1/tasks/{code}
   "message": "Priority C1642123456789 does not exist!"
 }
 ```
----
 
+---
 
 ## Delete Task
 
@@ -496,9 +522,9 @@ DELETE /v1/tasks/{code}
 
 ### Path Parameters
 
-| Parameter |  Type  | Required |       Description        |
-|:---------:|:------:|:--------:|:------------------------:|
-|   code    | String |   Yes    | Unique code of the task  |
+| Parameter |  Type  | Required |       Description       |
+|:---------:|:------:|:--------:|:-----------------------:|
+|   code    | String |   Yes    | Unique code of the task |
 
 ### Response
 

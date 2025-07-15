@@ -103,16 +103,11 @@ class Status(Model):
         nullable=False,
         index=True,
     )
+
+
 class Priority(Model):
     __tablename__ = 'priority'
 
     id_priority = sa.Column(INT, primary_key=True)
     code = sa.Column(sa.String(50), nullable=False, unique=True)
     label = sa.Column(sa.String(50), nullable=True)
-
-
-
-
-
-
-
