@@ -3,7 +3,7 @@ from libutil.sqlutil import insert_row
 from libtodolist.data.models import tables
 
 
-def insert_task(conn, id_user, code, title, description, id_priority, id_status, id_category):
+def insert_task(conn, id_user, code, title, description, id_priority, id_status, id_category, due_date):
     row = {
         'id_user': id_user,
         'code': code,
@@ -12,6 +12,7 @@ def insert_task(conn, id_user, code, title, description, id_priority, id_status,
         'id_priority': id_priority,
         'id_status': id_status,
         'id_category': id_category,
+        'due_date': due_date,
     }
     insert_row(conn, tables.Task, row)
 

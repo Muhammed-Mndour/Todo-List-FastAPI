@@ -1,15 +1,17 @@
 from libtodolist.data import entities
 from libutil.util import BaseModel
-from datetime import datetime
+from datetime import datetime, date, timedelta
 from pydantic import field_validator
 
 
 class AddTask(BaseModel):
+
     title: str
-    description: str
-    priority_code: str | None = "High"
-    status_code: str | None = "Pending"
-    category_code: str | None = "C1752504942590"
+    description: str | None = ""
+    priority_code: str = "P0473"  # Medium
+    status_code: str = "S4589045"  # Pending
+    category_code: str = "C1752577374150"  # None
+    due_date: date = date.today() + timedelta(days=7)
 
     @field_validator('title')
     def validate_label(cls, value: str) -> str:
@@ -23,9 +25,16 @@ class AddTask(BaseModel):
         id_status = entities.status.get_id_by_code(session.conn, self.status_code)
         id_category = entities.category.get_id_by_code(session.conn, self.category_code)
 
-        print("funnn ", id_status)
         entities.task.insert_task(
-            session.conn, ctx.id_user, code, self.title, self.description, id_priority, id_status, id_category
+            session.conn,
+            ctx.id_user,
+            code,
+            self.title,
+            self.description,
+            id_priority,
+            id_status,
+            id_category,
+            self.due_date,
         )
 
     def _generate_task_code(self):

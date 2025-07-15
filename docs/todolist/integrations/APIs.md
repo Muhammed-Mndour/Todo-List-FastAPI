@@ -246,13 +246,15 @@ POST /v1/tasks
 
 ### Request Body Parameters
 
-|   Parameter   |  Type  | Required |    Description    |
-|:-------------:|:------:|:--------:|:-----------------:|
-|     title     | String |   Yes    |    Task title     |        
-|  description  | String |   Yes    | Task descriptions |        
-| priority_code | String |   Yes    |   Task priority   |        
-|  status_code  | String |   Yes    |    Task state     |        
-| category_code | String |   Yes    |   Task category   |        
+|   Parameter   |  Type  | Required |    Description    |         Default         |
+|:-------------:|:------:|:--------:|:-----------------:|:-----------------------:|
+|     title     | String |   Yes    |    Task title     |            -            |
+|  description  | String |    No    | Task descriptions |            -            |
+| priority_code | String |    No    |   Task priority   |    "P0473"  # Medium    |
+|  status_code  | String |    No    |    Task state     |   "S4589045" #Pending   |
+| category_code | String |    No    |   Task category   | "C1752577374150" # None |
+|   due_date    |  Date  |    No    |   Task deadline   |    curTime + 7 days     |
+
 
 ### Payload
 
@@ -260,9 +262,10 @@ POST /v1/tasks
 {
   "title": "Home work",
   "description": "Home work",
-  "priority_code": "HighCode",
-  "status_code": "PendingCode",
-  "category_code": "C1752504942590"
+  "priority_code": "P0001",
+  "status_code": "S4589045",
+  "category_code": "C1752504942590",
+  "due_date": "2025-07-23"
 }
 ```
 
@@ -326,14 +329,14 @@ GET /v1/tasks
         "label": "Personal"
       },
       "priority": {
-        "code": "HighCode",
+        "code": "P0001",
         "label": "High"
       },
       "status": {
-        "code": "PendingCode",
+        "code": "S4589045",
         "label": "Pending"
       },
-      "due_date": "2025-07-14 14:55:42"
+      "due_date": "2025-07-14"
     },
     {
       "code": "C1753405180985",
@@ -344,14 +347,14 @@ GET /v1/tasks
         "label": "Personal"
       },
       "priority": {
-        "code": "HighCode",
+        "code": "P0001",
         "label": "High"
       },
       "status": {
-        "code": "PendingCode",
+        "code": "S4589045",
         "label": "Pending"
       },
-      "due_date": "2025-07-14 14:55:42"
+      "due_date": "2025-07-14"
     }
   ]
 }
@@ -373,14 +376,14 @@ GET /v1/tasks
       "label": "Personal"
     },
     "priority": {
-      "code": "HighCode",
+      "code": "P0001",
       "label": "High"
     },
     "status": {
-      "code": "PendingCode",
+      "code": "S4589045",
       "label": "Pending"
     },
-    "due_date": "2025-07-14 14:55:42"
+    "due_date": "2025-07-14"
   }
 }
 ```
@@ -430,7 +433,7 @@ PUT /v1/tasks/{code}
 | category_code | String |    NO    | New task category_code |
 | priority_code | String |    No    | New task priority_code |
 |  status_code  | String |    No    |  New task status_code  |
-|   due_date    | String |    No    |   New task due_date    |
+|   due_date    |  Date  |    No    |   New task due_date    |
 
 ### Payload
 
@@ -439,9 +442,9 @@ PUT /v1/tasks/{code}
   "title": "task2",
   "description": "task2 description",
   "category_code": "C1752504942590",
-  "priority_code": "LowCode",
-  "status_code": "CompletedCode",
-  "due_date": "2025-07-14 14:55:42"
+  "priority_code": "P2438",
+  "status_code": "S4589045",
+  "due_date": "2025-07-14"
 }
 ```
 
