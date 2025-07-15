@@ -253,8 +253,7 @@ POST /v1/tasks
 | priority_code | String |    No    |   Task priority   |    "P0473"  # Medium    |
 |  status_code  | String |    No    |    Task state     |   "S4589045" #Pending   |
 | category_code | String |    No    |   Task category   | "C1752577374150" # None |
-|   due_date    |  Date  |    No    |   Task deadline   |    curTime + 7 days     |
-
+|   due_date    |  Date  |    No    |   Task deadline   |  current date + 7 days  |
 
 ### Payload
 
@@ -304,7 +303,7 @@ POST /v1/tasks
 GET /v1/tasks
 ```
 
-### Request Path Parameters
+### Request Query Parameters
 
 | Parameter |  Type  | Required | Description |
 |:---------:|:------:|:--------:|:-----------:|

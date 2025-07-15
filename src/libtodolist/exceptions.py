@@ -39,3 +39,19 @@ class ForbiddenActionException(ClientException):
 
 class CategoryValidationException(ClientException):
     pass
+
+
+class TaskValidationException(ClientException):
+    pass
+
+
+class PriorityValidationException(ClientException):
+    pass
+
+
+class StatusValidationException(ClientException):
+    pass
+
+
+class DueDateValidationException(ClientException):
+    pass

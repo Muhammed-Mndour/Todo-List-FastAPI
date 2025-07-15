@@ -7,9 +7,10 @@
 from fastapi import APIRouter, Depends
 from libtodolist.context import RequestContext
 from src.libtodolist.db_session import TodolistSession
-from src.libtodolist.messages.common import ResponseBaseModel
+from src.libtodolist.messages.common import ResponseBaseModel, ErrorResponse
 from .dependencies import get_request_context
 from libtodolist import domain
+
 from libtodolist.messages.task import GetTasksResponse, GetTaskResponse
 
 router = APIRouter()
@@ -25,15 +26,36 @@ def add_task(
     return ResponseBaseModel(success=True, message="Task added successfully!")
 
 
-# @router.get('')
-# def get_tasks(
-#         code: str | None = None,
-#         ctx: RequestContext = Depends(get_request_context),
-# ):
-#     with TodolistSession() as session:
-#         if code is None:
-#             tasks = domain.task.GetTasks().execute(ctx, session)
-#             return GetTasksResponse(success=True, data=tasks)
-#         task = domain.task.GetTask().execute(ctx, session, code)
-#
-#     return GetTaskResponse(success=True, data=task)
+@router.get('')
+def get_tasks(
+    msg: domain.task.GetTasks = Depends(),
+    ctx: RequestContext = Depends(get_request_context),
+):
+    with TodolistSession() as session:
+        data = msg.execute(ctx, session)
+
+    if not msg.code:
+        return GetTasksResponse(success=True, data=data)
+    if not data:
+        return ErrorResponse(code=404, message=f"Task {msg.code} not found")
+    return GetTaskResponse(success=True, data=data)
+
+
+@router.put('/{code}')
+def update_task(
+    msg: domain.task.UpdateTask = Depends(),
+    ctx: RequestContext = Depends(get_request_context),
+):
+    with TodolistSession() as session:
+        msg.execute(ctx, session)
+    return ResponseBaseModel(success=True, message="Task updated successfully!")
+
+
+@router.delete('/{code}')
+def delete_task(
+    msg: domain.task.DeleteTask = Depends(),
+    ctx: RequestContext = Depends(get_request_context),
+):
+    with TodolistSession() as session:
+        msg.execute(ctx, session)
+    return ResponseBaseModel(success=True, message="Task deleted successfully!")

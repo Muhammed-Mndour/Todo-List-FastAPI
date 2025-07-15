@@ -2,23 +2,17 @@ from typing import List
 
 from libtodolist.messages.common import ResponseBaseModel
 from libutil.util import BaseModel
-from datetime import datetime
+from datetime import datetime, date
 
 
-# code
-# title
-# description
-# priority
-# due_date
-# id_status
-# id_category
 class Task(BaseModel):
     code: str
     title: str
-    description: str
-    priority: int
-    due_date: datetime
+    description: str | None = None
+    id_category: int
+    id_priority: int
     id_status: int
+    due_date: date
 
 
 class GetTasksResponse(ResponseBaseModel):
