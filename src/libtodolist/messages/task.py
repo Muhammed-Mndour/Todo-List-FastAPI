@@ -4,14 +4,18 @@ from libtodolist.messages.common import ResponseBaseModel
 from libutil.util import BaseModel
 from datetime import datetime, date
 
+from .category import Category
+from .priority import Priority
+from .status import Status
+
 
 class Task(BaseModel):
     code: str
     title: str
     description: str | None = None
-    id_category: int
-    id_priority: int
-    id_status: int
+    category: Category
+    priority: Priority
+    status: Status
     due_date: date
 
 

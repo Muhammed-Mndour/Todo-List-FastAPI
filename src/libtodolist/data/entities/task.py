@@ -21,10 +21,23 @@ def get_all_user_tasks(conn, id_user):
     return sql(
         conn,
         '''
-        SELECT code, title, description, id_category, id_priority, id_status, due_date
-        FROM task
-        WHERE id_user = :id_user
-          AND is_active = 1
+        SELECT 
+              t.code          AS task_code,
+              t.title         As title,
+              t.description   As description,  
+              c.label         AS category_label,
+              c.code          AS category_code,
+              p.label         AS priority_label,
+              p.code          AS priority_code,
+              s.label         AS status_label,
+              s.code          AS status_code,
+              t.due_date      AS due_date
+        FROM task t
+        JOIN category c ON t.id_category = c.id_category
+        JOIN priority p ON t.id_priority = p.id_priority
+        JOIN status s ON t.id_status = s.id_status
+        WHERE t.id_user = :id_user
+          AND t.is_active = 1
         ''',
         id_user=id_user,
     ).dicts()
@@ -34,15 +47,28 @@ def get_by_code(conn, id_user, code):
     return sql(
         conn,
         '''
-        SELECT code, title, description, id_category, id_priority, id_status, due_date
-        FROM task
-        WHERE id_user = :id_user
-          AND code = :code
-          AND  is_active = 1
+        SELECT 
+              t.code          AS task_code,
+              t.title         As title,
+              t.description   As description,  
+              c.label         AS category_label,
+              c.code          AS category_code,
+              p.label         AS priority_label,
+              p.code          AS priority_code,
+              s.label         AS status_label,
+              s.code          AS status_code,
+              t.due_date      AS due_date
+        FROM task t
+        JOIN category c ON t.id_category = c.id_category
+        JOIN priority p ON t.id_priority = p.id_priority
+        JOIN status s ON t.id_status = s.id_status
+        WHERE t.id_user = :id_user
+            AND t.code = :code
+            AND t.is_active = 1
         ''',
         id_user=id_user,
         code=code,
-    ).dict()
+    ).dicts()
 
 
 def update_task_by_code(conn, code, **kwargs):
