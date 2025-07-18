@@ -291,11 +291,11 @@ POST /v1/tasks
 
 ---
 
-## Get Task
+## Get Tasks
 
 - This API returns a list of all tasks belonging to the authenticated user.
 - Tasks are filtered by authenticated user and only active tasks are returned.
-- If task_code provided then API returns this task only
+- If category_code provided then API returns this tasks only
 
 ### Endpoint
 
@@ -305,61 +305,107 @@ GET /v1/tasks
 
 ### Request Query Parameters
 
-| Parameter |  Type  | Required | Description |
-|:---------:|:------:|:--------:|:-----------:|
-| task_code | String |    No    |  Task Code  |        
+|   Parameter   |  Type  | Required |  Description  |
+|:-------------:|:------:|:--------:|:-------------:|
+| category_code | String |    No    | Category Code |        
 
 ## Response
-
-### For all tasks
 
 ```json
 {
   "success": true,
   "code": 200,
   "message": "",
-  "data": [
-    {
-      "code": "C1752505180985",
-      "title": "task1",
-      "description": "task1 description",
-      "category": {
+  "data": {
+    "tasks": [
+      {
+        "code": "C1752505180985",
+        "title": "task1",
+        "category_code": "C1752504942590",
+        "priority_code": "P0001",
+        "status_code": "S4589045",
+        "due_date": "2025-07-14"
+      },
+      {
+        "code": "C1753405180985",
+        "title": "task2",
+        "category_code": "C1752504942590",
+        "priority_code": "P0001",
+        "status_code": "S4589045",
+        "due_date": "2025-07-14"
+      }
+    ],
+    "categories": [
+      {
         "code": "C1752504942590",
         "label": "Personal"
       },
-      "priority": {
+      {
+        "code": "C1752504562495",
+        "label": "Work"
+      }
+    ],
+    "priorities": [
+      {
         "code": "P0001",
         "label": "High"
       },
-      "status": {
+      {
+        "code": "P6586",
+        "label": "Low"
+      }
+    ],
+    "statuses": [
+      {
         "code": "S4589045",
         "label": "Pending"
       },
-      "due_date": "2025-07-14"
-    },
-    {
-      "code": "C1753405180985",
-      "title": "task2",
-      "description": "task2 description",
-      "category": {
-        "code": "C1752504942590",
-        "label": "Personal"
-      },
-      "priority": {
-        "code": "P0001",
-        "label": "High"
-      },
-      "status": {
-        "code": "S4589045",
-        "label": "Pending"
-      },
-      "due_date": "2025-07-14"
-    }
-  ]
+      {
+        "code": "S4658652",
+        "label": "Completed"
+      }
+    ]
+  }
+
+```
+
+
+### Error Response
+
+```json
+{
+  "success": false,
+  "code": 500,
+  "message": "Sorry, something went wrong on our side"
 }
 ```
 
-### For a single task
+```json
+{
+  "success": false,
+  "code": 400,
+  "message": "Category C1752505180985 not found"
+}
+```
+
+## Get Task
+
+- This API returns a task belonging to the authenticated user.
+- Tasks are filtered by authenticated user and only active tasks are returned.
+
+### Endpoint
+
+```http request
+GET /v1/task
+```
+
+### Request Path Parameters
+
+| Parameter |  Type  | Required | Description |
+|:---------:|:------:|:--------:|:-----------:|
+| task_code | String |   Yes    |  Task Code  |        
+
+## Response
 
 ```json
 {
@@ -404,6 +450,7 @@ GET /v1/tasks
   "message": "Task C1752505180985 not found"
 }
 ```
+
 
 ## Update Task
 

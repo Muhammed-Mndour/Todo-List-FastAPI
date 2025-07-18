@@ -16,6 +16,7 @@ from libtodolist.messages.task import GetTasksResponse, GetTaskResponse, Task
 from libtodolist.messages.category import Category
 from libtodolist.messages.priority import Priority
 from libtodolist.messages.status import Status
+from typing import List
 
 
 router = APIRouter()
@@ -39,21 +40,7 @@ def get_tasks(
     with TodolistSession() as session:
         data = msg.execute(ctx, session)
 
-    tasks: List[Task] = []
-    for task in data:
-        category = Category(code=task['category_code'], label=task['category_label'])
-        priority = Priority(code=task['priority_code'], label=task['priority_label'])
-        status = Status(code=task['status_code'], label=task['status_label'])
-        curTask = Task(
-            code=task['task_code'],
-            title=task['title'],
-            description=task['description'],
-            category=category,
-            priority=priority,
-            status=status,
-            due_date=task['due_date'],
-        )
-        tasks.append(curTask)
+    tasks: List[Task] = [Task().format(task) for task in data]
 
     if not msg.code:
         return GetTasksResponse(success=True, data=tasks)
