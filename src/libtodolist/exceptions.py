@@ -55,3 +55,7 @@ class StatusValidationException(ClientException):
 
 class DueDateValidationException(ClientException):
     pass
+
+
+class TaskNotFoundException(ClientException):
+    pass

@@ -13,3 +13,13 @@ def get_id_by_code(conn, code):
         ''',
         code=code,
     ).scalar()
+
+
+def get_all_statuses(conn):
+    return sql(
+        conn,
+        '''
+        SELECT code, label
+        FROM status
+    ''',
+    ).dicts()

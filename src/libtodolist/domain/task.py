@@ -2,39 +2,45 @@ from libtodolist.data import entities
 from libutil.util import BaseModel
 from datetime import datetime, date, timedelta
 from pydantic import field_validator
-from fastapi import HTTPException, Body
+
 from libtodolist.exceptions import (
     TaskValidationException,
     CategoryValidationException,
     PriorityValidationException,
     StatusValidationException,
     DueDateValidationException,
+    TaskNotFoundException,
+    ForbiddenActionException,
 )
 
 from src.libtodolist.data.models.tables import Priority
+from src.libtodolist.exceptions import ForbiddenActionException
 
 
 class AddTask(BaseModel):
 
     title: str
-    description: str = ""
-    priority_code: str = "P0473"  # Medium
-    status_code: str = "S4589045"  # Pending
-    category_code: str = "C1752577374150"  # None
-    due_date: date = date.today() + timedelta(days=7)
+    description: str | None = None
+    priority_code: str | None = None
+    status_code: str | None = None
+    category_code: str | None = None
+    due_date: date | None = None
 
     @field_validator('title')
-    def validate_label(cls, value: str) -> str:
+    def validate_title(cls, value: str) -> str:
         if not value:
             raise ValueError('title must not be empty')
         return value
 
     def execute(self, ctx, session):
+
         code = self._generate_task_code()
+        self._validate()
+
         id_priority = entities.priority.get_id_by_code(session.conn, self.priority_code)
         id_status = entities.status.get_id_by_code(session.conn, self.status_code)
         id_category = entities.category.get_id_by_code(session.conn, self.category_code)
-
+        print(id_category)
         entities.task.insert_task(
             session.conn,
             ctx.id_user,
@@ -47,30 +53,44 @@ class AddTask(BaseModel):
             self.due_date,
         )
 
+    def _validate(self):
+        if self.description is None:
+            self.description = ""
+        if self.priority_code is None:
+            self.priority_code = "P0473"  # Medium
+        if self.status_code is None:
+            self.status_code = "S4589045"  # Pending
+        if self.due_date is None:
+            self.due_date = date.today() + timedelta(days=7)
+
     def _generate_task_code(self):
         return f"C{int(datetime.now().timestamp() * 1000)}"
 
 
 class GetTasks(BaseModel):
-    code: str | None = None
+    category_code: str | None = None
 
     def execute(self, ctx, session):
-        if not self.code:
-            tasks = entities.task.get_all_user_tasks(session.conn, ctx.id_user)
-            return tasks
-        else:
-            task = entities.task.get_by_code(session.conn, ctx.id_user, self.code)
-            return task
+        tasks = entities.task.get_all_user_tasks(session.conn, id_user=ctx.id_user, category_code=self.category_code)
+        return tasks
 
 
-# {
-#   "title": "task2",
-#   "description": "task2 description",
-#   "id_category: "C1752504942590",
-#   "id_priority": "P2438",
-#   "id_status": "S4589045",
-#   "due_date": "2025-07-14"
-# }
+class GetTask(BaseModel):
+    code: str
+
+    def execute(self, ctx, session):
+        task = self._validate(session.conn, ctx.id_user)
+        return task
+
+    def _validate(self, conn, id_user):
+        task = entities.task.get_all_user_tasks(conn, task_code=self.code)
+        if task is None:
+            raise TaskNotFoundException(message=f"Task {self.code} not found")
+        if task['id_user'] != id_user:
+            raise ForbiddenActionException()
+        return task
+
+
 class UpdateTask(BaseModel):
     class Task(BaseModel):
         title: str | None = None
@@ -99,9 +119,11 @@ class UpdateTask(BaseModel):
         entities.task.update_task_by_code(session.conn, self.code, **kwargs)
 
     def _validate(self, conn, id_user, title, description, category_code, priority_code, status_code, due_date, kwargs):
-        task = entities.task.get_by_code(conn, id_user, self.code)
+        task = entities.task.get_all_user_tasks(conn, task_code=self.code)
         if not task:
             raise TaskValidationException(f"Task {self.code} does not exist!")
+        if task['id_user'] != id_user:
+            raise ForbiddenActionException()
 
         if title:
             kwargs['title'] = title
@@ -141,6 +163,8 @@ class DeleteTask(BaseModel):
         entities.task.delete_task_by_code(session.conn, self.code)
 
     def _validate(self, conn, id_user, code):
-        task = entities.task.get_by_code(conn, id_user, code)
+        task = entities.task.get_all_user_tasks(conn, task_code=code)
         if not task:
             raise TaskValidationException(f"Task {code} does not exist!")
+        if task['id_user'] != id_user:
+            raise ForbiddenActionException()

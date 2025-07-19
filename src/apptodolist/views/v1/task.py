@@ -7,15 +7,14 @@
 from fastapi import APIRouter, Depends
 from libtodolist.context import RequestContext
 from src.libtodolist.db_session import TodolistSession
+from src.libtodolist.messages.category import Category
 from src.libtodolist.messages.common import ResponseBaseModel, ErrorResponse
 
 from .dependencies import get_request_context
 from libtodolist import domain
 
-from libtodolist.messages.task import GetTasksResponse, GetTaskResponse, Task
-from libtodolist.messages.category import Category
-from libtodolist.messages.priority import Priority
-from libtodolist.messages.status import Status
+from libtodolist.messages.task import GetTasksResponse, GetTaskResponse, DetailedTask, TaskDataResponse
+
 from typing import List
 
 
@@ -38,17 +37,25 @@ def get_tasks(
     ctx: RequestContext = Depends(get_request_context),
 ):
     with TodolistSession() as session:
+        tasks = msg.execute(ctx, session)
+        categories: List[Category] = domain.category.GetCategories().execute(ctx, session)
+        priorities: List[Priority] = domain.priority.GetPriorities().execute(session)
+        statuses: List[Status] = domain.status.GetStatuses().execute(session)
+
+    data_response: TaskDataResponse = TaskDataResponse().format(tasks, categories, priorities, statuses)
+    return GetTasksResponse(success=True, data=data_response)
+
+
+@router.get('/{code}')
+def get_task(
+    msg: domain.task.GetTask = Depends(),
+    ctx: RequestContext = Depends(get_request_context),
+):
+    with TodolistSession() as session:
         data = msg.execute(ctx, session)
 
-    tasks: List[Task] = [Task().format(task) for task in data]
-
-    if not msg.code:
-        return GetTasksResponse(success=True, data=tasks)
-
-    if not data:
-        return ErrorResponse(code=404, message=f"Task {msg.code} not found")
-
-    return GetTaskResponse(success=True, data=tasks[0])
+    task = DetailedTask().format(data)
+    return GetTaskResponse(success=True, data=task)
 
 
 @router.put('/{code}')

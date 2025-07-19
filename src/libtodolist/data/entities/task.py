@@ -17,58 +17,45 @@ def insert_task(conn, id_user, code, title, description, id_priority, id_status,
     insert_row(conn, tables.Task, row)
 
 
-def get_all_user_tasks(conn, id_user):
-    return sql(
+def get_all_user_tasks(
+    conn, id_user: str | None = None, category_code: str | None = None, task_code: str | None = None
+):
+    data = sql(
         conn,
         '''
-        SELECT 
-              t.code          AS task_code,
-              t.title         As title,
-              t.description   As description,  
-              c.label         AS category_label,
-              c.code          AS category_code,
-              p.label         AS priority_label,
-              p.code          AS priority_code,
-              s.label         AS status_label,
-              s.code          AS status_code,
-              t.due_date      AS due_date
+        SELECT t.code     AS task_code,
+               t.title    As title,
+               t.description AS description,
+               c.label    AS category_label,
+               c.code     AS category_code,
+               p.label    AS priority_label,
+               p.code     AS priority_code,
+               s.label    AS status_label,
+               s.code     AS status_code,
+               t.due_date AS due_date,
+               t.id_user  AS id_user
         FROM task t
-        JOIN category c ON t.id_category = c.id_category
-        JOIN priority p ON t.id_priority = p.id_priority
-        JOIN status s ON t.id_status = s.id_status
-        WHERE t.id_user = :id_user
-          AND t.is_active = 1
+                 LEFT JOIN category c ON t.id_category = c.id_category
+                 INNER JOIN priority p ON t.id_priority = p.id_priority
+                 INNER JOIN status s ON t.id_status = s.id_status
+        WHERE t.is_active = 1 
+        {% if id_user %}
+          AND t.id_user = :id_user
+        {% endif %}
+        {% if category_code %}
+          AND c.code = :category_code
+        {% endif %}
+        {% if task_code %}
+          AND t.code = :task_code
+        {% endif %}
         ''',
         id_user=id_user,
-    ).dicts()
-
-
-def get_by_code(conn, id_user, code):
-    return sql(
-        conn,
-        '''
-        SELECT 
-              t.code          AS task_code,
-              t.title         As title,
-              t.description   As description,  
-              c.label         AS category_label,
-              c.code          AS category_code,
-              p.label         AS priority_label,
-              p.code          AS priority_code,
-              s.label         AS status_label,
-              s.code          AS status_code,
-              t.due_date      AS due_date
-        FROM task t
-        JOIN category c ON t.id_category = c.id_category
-        JOIN priority p ON t.id_priority = p.id_priority
-        JOIN status s ON t.id_status = s.id_status
-        WHERE t.id_user = :id_user
-            AND t.code = :code
-            AND t.is_active = 1
-        ''',
-        id_user=id_user,
-        code=code,
-    ).dicts()
+        category_code=category_code,
+        task_code=task_code,
+    )
+    if task_code is None:
+        return data.dicts()
+    return data.dict()
 
 
 def update_task_by_code(conn, code, **kwargs):

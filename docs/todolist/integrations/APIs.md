@@ -246,14 +246,14 @@ POST /v1/tasks
 
 ### Request Body Parameters
 
-|   Parameter   |  Type  | Required |    Description    |         Default         |
-|:-------------:|:------:|:--------:|:-----------------:|:-----------------------:|
-|     title     | String |   Yes    |    Task title     |            -            |
-|  description  | String |    No    | Task descriptions |            -            |
-| priority_code | String |    No    |   Task priority   |    "P0473"  # Medium    |
-|  status_code  | String |    No    |    Task state     |   "S4589045" #Pending   |
-| category_code | String |    No    |   Task category   | "C1752577374150" # None |
-|   due_date    |  Date  |    No    |   Task deadline   |  current date + 7 days  |
+|   Parameter   |  Type  | Required |    Description    |        Default        |
+|:-------------:|:------:|:--------:|:-----------------:|:---------------------:|
+|     title     | String |   Yes    |    Task title     |           -           |
+|  description  | String |    No    | Task descriptions |          ""           |
+| priority_code | String |    No    |   Task priority   |   "P0473"  # Medium   |
+|  status_code  | String |    No    |    Task state     |  "S4589045" #Pending  |
+| category_code | String |    No    |   Task category   |           -           |
+|   due_date    |  Date  |    No    |   Task deadline   | current date + 7 days |
 
 ### Payload
 
@@ -369,7 +369,6 @@ GET /v1/tasks
 
 ```
 
-
 ### Error Response
 
 ```json
@@ -450,7 +449,6 @@ GET /v1/task
   "message": "Task C1752505180985 not found"
 }
 ```
-
 
 ## Update Task
 
