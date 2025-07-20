@@ -35,12 +35,12 @@ class AddTask(BaseModel):
     def execute(self, ctx, session):
 
         code = self._generate_task_code()
-        self._validate()
+        self._initialize_fields()
 
         id_priority = entities.priority.get_id_by_code(session.conn, self.priority_code)
         id_status = entities.status.get_id_by_code(session.conn, self.status_code)
         id_category = entities.category.get_id_by_code(session.conn, self.category_code)
-        print(id_category)
+
         entities.task.insert_task(
             session.conn,
             ctx.id_user,
@@ -53,7 +53,7 @@ class AddTask(BaseModel):
             self.due_date,
         )
 
-    def _validate(self):
+    def _initialize_fields(self):
         if self.description is None:
             self.description = ""
         if self.priority_code is None:
