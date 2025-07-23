@@ -93,7 +93,7 @@ class Status(Model):
     __tablename__ = 'status'
 
     id_status = sa.Column(INT, primary_key=True)
-    code = sa.Column(sa.String(50), nullable=False, unique=True)
+    code = sa.Column(sa.String(10), nullable=False, unique=True)
     label = sa.Column(sa.String(15), nullable=True)
 
     created_at = sa.Column(types.TIMESTAMP, server_default=text('CURRENT_TIMESTAMP'), nullable=False, index=True)
@@ -109,5 +109,5 @@ class Priority(Model):
     __tablename__ = 'priority'
 
     id_priority = sa.Column(INT, primary_key=True)
-    code = sa.Column(sa.String(50), nullable=False, unique=True)
+    code = sa.Column(sa.String(10), nullable=False, unique=True)
     label = sa.Column(sa.String(10), nullable=True)

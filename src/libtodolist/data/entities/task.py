@@ -59,72 +59,47 @@ def get_all_user_tasks(
 
 
 def update_task_by_code(conn, code, **kwargs):
-    if 'title' in kwargs:
-        sql(
-            conn,
-            '''
-            UPDATE task
-            SET title = :title
-            WHERE code = :code
-            ''',
-            title=kwargs['title'],
-            code=code,
-        )
-    if 'description' in kwargs:
-        sql(
-            conn,
-            '''
-            UPDATE task
-            SET description = :description
-            WHERE code = :code
-            ''',
-            code=code,
-            description=kwargs['description'],
-        )
-    if 'id_category' in kwargs:
-        sql(
-            conn,
-            '''
-            UPDATE task
-            SET id_category = :id_category
-            WHERE code = :code
-            ''',
-            code=code,
-            id_category=kwargs['id_category'],
-        )
-    if 'id_priority' in kwargs:
-        sql(
-            conn,
-            '''
-            UPDATE task
-            SET id_priority = :id_priority
-            WHERE code = :code
-            ''',
-            code=code,
-            id_priority=kwargs['id_priority'],
-        )
-    if 'id_status' in kwargs:
-        sql(
-            conn,
-            '''
-            UPDATE task
-            SET id_status = :id_status
-            WHERE code = :code
-            ''',
-            code=code,
-            id_status=kwargs['id_status'],
-        )
-    if 'due_date' in kwargs:
-        sql(
-            conn,
-            '''
-            UPDATE task
-            SET due_date = :due_date
-                WHERE code = :code
-                 ''',
-            code=code,
-            due_date=kwargs['due_date'],
-        )
+    title = kwargs['title'] if 'title' in kwargs else None
+    description = kwargs['description'] if 'description' in kwargs else None
+    id_priority = kwargs['id_priority'] if 'id_priority' in kwargs else None
+    id_status = kwargs['id_status'] if 'id_status' in kwargs else None
+    id_category = kwargs['id_category'] if 'id_category' in kwargs else None
+    due_date = kwargs['due_date'] if 'due_date' in kwargs else None
+
+    sql(
+        conn,
+        '''
+        UPDATE task
+        SET
+            title = title
+            {% if title %}
+            ,title = :title
+            {% endif %}
+            {% if description %}
+            ,description = :description
+            {% endif %}
+            {% if id_priority %}
+            ,id_priority = :id_priority
+            {% endif %}
+            {% if id_status %}
+            ,id_status = :id_status
+            {% endif %}
+            {% if id_category %}
+            ,id_category = :id_category
+            {% endif %}
+            {% if due_date %}
+            ,due_date = :due_date
+            {% endif %}
+        WHERE code = :code
+        ''',
+        title=title,
+        description=description,
+        id_priority=id_priority,
+        id_status=id_status,
+        id_category=id_category,
+        due_date=due_date,
+        code=code,
+    )
 
 
 def delete_task_by_code(conn, code):
