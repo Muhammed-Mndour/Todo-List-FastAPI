@@ -35,6 +35,7 @@ class AddTask(BaseModel):
     def execute(self, ctx, session):
 
         code = self._generate_task_code()
+        self._validate(session.conn)
         self._initialize_fields()
 
         id_priority = entities.priority.get_id_by_code(session.conn, self.priority_code)
@@ -53,13 +54,33 @@ class AddTask(BaseModel):
             self.due_date,
         )
 
+    def _validate(self, conn):
+        if self.category_code:
+            id_category = entities.category.get_id_by_code(conn, self.category_code)
+            if not id_category:
+                raise CategoryValidationException(f"Category {self.category_code} does not exist!")
+
+        if self.priority_code:
+            id_priority = entities.priority.get_id_by_code(conn, self.priority_code)
+            if not id_priority:
+                raise PriorityValidationException(f"Priority {self.priority_code} does not exist!")
+
+        if self.status_code:
+            id_status = entities.status.get_id_by_code(conn, self.status_code)
+            if not id_status:
+                raise StatusValidationException(f"Status {self.status_code} does not exist!")
+
+        if self.due_date:
+            if self.due_date < date.today():
+                raise DueDateValidationException(f"Due date {self.due_date} must be in the future!")
+
     def _initialize_fields(self):
         if self.description is None:
             self.description = ""
         if self.priority_code is None:
-            self.priority_code = "P0473"  # Medium
+            self.priority_code = "PMed456789"  # Medium
         if self.status_code is None:
-            self.status_code = "S4589045"  # Pending
+            self.status_code = "SNew456789"  # Pending
         if self.due_date is None:
             self.due_date = date.today() + timedelta(days=7)
 
@@ -83,7 +104,7 @@ class GetTask(BaseModel):
         return task
 
     def _validate(self, conn, id_user):
-        task = entities.task.get_all_user_tasks(conn, task_code=self.code)
+        task = entities.task.get_a_user_task(conn, task_code=self.code)
         if task is None:
             raise TaskNotFoundException(message=f"Task {self.code} not found")
         if task['id_user'] != id_user:

@@ -46,3 +46,9 @@ def insert_row(conn: Any, table: Type[Base], row: Dict[str, Any], ignore: bool =
         ignore=ignore,
         **filtered_row,
     )
+
+
+# INSERT INTO task
+# (code, title, description, id_priority, id_status, id_category, due_date)
+# VALUES
+# (:code, :title, :description, :id_priority, :id_status, :id_category, :due_date)

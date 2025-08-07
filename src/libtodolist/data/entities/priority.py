@@ -1,6 +1,7 @@
 from jsql import sql
 
 from libtodolist.data.models import tables
+from libutil.sqlutil import insert_row
 
 
 def get_id_by_code(conn, code):
@@ -23,3 +24,11 @@ def get_all_priorities(conn):
         FROM priority
     ''',
     ).dicts()
+
+
+def add_priority(conn, code, label):
+    row = {
+        'code': code,
+        'label': label,
+    }
+    insert_row(conn, tables.Priority, row)
