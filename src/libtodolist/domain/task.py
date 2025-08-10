@@ -2,6 +2,9 @@ from libtodolist.data import entities
 from libutil.util import BaseModel
 from datetime import datetime, date, timedelta
 from pydantic import field_validator
+from libtodolist.domain.enums.status import StatusLabel
+from libtodolist.domain.enums.priority import PriorityLabel
+
 
 from libtodolist.exceptions import (
     TaskValidationException,
@@ -36,7 +39,7 @@ class AddTask(BaseModel):
 
         code = self._generate_task_code()
         self._validate(session.conn)
-        self._initialize_fields()
+        self._initialize_fields(session.conn)
 
         id_priority = entities.priority.get_id_by_code(session.conn, self.priority_code)
         id_status = entities.status.get_id_by_code(session.conn, self.status_code)
@@ -74,13 +77,15 @@ class AddTask(BaseModel):
             if self.due_date < date.today():
                 raise DueDateValidationException(f"Due date {self.due_date} must be in the future!")
 
-    def _initialize_fields(self):
+    def _initialize_fields(self, conn):
         if self.description is None:
             self.description = ""
         if self.priority_code is None:
-            self.priority_code = "PMed456789"  # Medium
+            self.priority_code = entities.priority.get_code_by_label(conn, PriorityLabel.MEDIUM.value)  # Medium
+            print(self.priority_code)
         if self.status_code is None:
-            self.status_code = "SNew456789"  # Pending
+            self.status_code = entities.status.get_code_by_label(conn, StatusLabel.NEW.value)  # NEW
+            print(self.status_code)
         if self.due_date is None:
             self.due_date = date.today() + timedelta(days=7)
 
@@ -140,7 +145,7 @@ class UpdateTask(BaseModel):
         entities.task.update_task_by_code(session.conn, self.code, **kwargs)
 
     def _validate(self, conn, id_user, title, description, category_code, priority_code, status_code, due_date, kwargs):
-        task = entities.task.get_all_user_tasks(conn, task_code=self.code)
+        task = entities.task.get_a_user_task(conn, task_code=self.code)
         if not task:
             raise TaskValidationException(f"Task {self.code} does not exist!")
         if task['id_user'] != id_user:

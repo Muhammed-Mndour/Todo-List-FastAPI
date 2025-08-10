@@ -32,3 +32,15 @@ def add_priority(conn, code, label):
         'label': label,
     }
     insert_row(conn, tables.Priority, row)
+
+
+def get_code_by_label(conn, label):
+    return sql(
+        conn,
+        '''
+        SELECT code 
+        FROM priority 
+        WHERE label = :label
+        ''',
+        label=label,
+    ).scalar()

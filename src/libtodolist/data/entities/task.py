@@ -128,21 +128,21 @@ def update_task_by_code(conn, code, **kwargs):
         '''
         UPDATE task
         SET
-            title = title
+            is_active = is_active
             {% if title %}
-            ,title = :title,
+            ,title = :title
             {% endif %}
             {% if description %}
-            ,description = :description,
+            ,description = :description
             {% endif %}
             {% if id_priority %}
-            ,id_priority = :id_priority,
+            ,id_priority = :id_priority
             {% endif %}
             {% if id_status %}
-            ,id_status = :id_status,
+            ,id_status = :id_status
             {% endif %}
             {% if id_category %}
-            ,id_category = :id_category,
+            ,id_category = :id_category
             {% endif %}
             {% if due_date %}
             ,due_date = :due_date
