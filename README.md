@@ -18,8 +18,7 @@ A clean, production-minded FastAPI **ToDoList** microservice implementing catego
 * [Testing & quality](#testing--quality)
 * [Examples (curl)](#examples-curl)
 * [What I learned](#what-i-learned)
-* [Contributing](#contributing)
-* [License & links](#license--links)
+
 
 ---
 
