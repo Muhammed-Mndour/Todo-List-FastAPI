@@ -3,7 +3,7 @@
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com/Muhammed-Mndour/bolierplate)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)]()
 
-A clean, production-minded FastAPI **ToDoList** microservice implementing categories, tasks, priorities and statuses with a small, testable architecture.
+A clean, production-minded FastAPI **ToDoList**  implementing categories, tasks, priorities and statuses with a small, testable architecture.
 
 ![Swagger UI Screenshot](docs/swagger.png)
 
@@ -24,7 +24,7 @@ A clean, production-minded FastAPI **ToDoList** microservice implementing catego
 
 ## Project overview
 
-This repository contains a small but realistic FastAPI-based ToDo microservice. It focuses on clear separation of concerns, testability and developer ergonomics:
+This repository contains a small but realistic FastAPI-based ToDoList Application . It focuses on clear separation of concerns, testability and developer ergonomics:
 
 * **API layer** (versioned v1/v2)
 * **Domain & data layers** (business logic + DB entities)
