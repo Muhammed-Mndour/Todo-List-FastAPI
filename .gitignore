@@ -1,3 +1,51 @@
-.venv/*
-.idea/*
-__pycache__/*
+# Byte-compiled / cache files
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Environment files
+.env
+.venv/
+venv/
+env/
+ENV/
+
+# Python packaging
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# IDE / editor settings
+.vscode/
+.idea/
+*.swp
+
+# Logs
+*.log
+logs/
+
+# Test & coverage
+.coverage
+.pytest_cache/
+htmlcov/
+
+# Docker & Compose
+*.pid
+*.seed
+*.pid.lock
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Virtual environment lock files (optional if regenerated)
+uv.lock
+
+# Local dev configs
+common-config.yml
+dev-env/docker-compose.yml
+compose/apptodolist.yml
+dev-env/services/*.yml

@@ -82,10 +82,8 @@ class AddTask(BaseModel):
             self.description = ""
         if self.priority_code is None:
             self.priority_code = entities.priority.get_code_by_label(conn, PriorityLabel.MEDIUM.value)  # Medium
-            print(self.priority_code)
         if self.status_code is None:
             self.status_code = entities.status.get_code_by_label(conn, StatusLabel.NEW.value)  # NEW
-            print(self.status_code)
         if self.due_date is None:
             self.due_date = date.today() + timedelta(days=7)
 
