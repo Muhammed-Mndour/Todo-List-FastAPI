@@ -115,7 +115,7 @@ POST /v1/categories
 {
   "success": false,
   "code": 400,
-  "message": "label must be alphanumeric"
+  "message": "Value error, label must be alphanumeric"
 }
 ```
 
@@ -366,7 +366,7 @@ GET /v1/tasks
       }
     ]
   }
-
+}
 ```
 
 ### Error Response

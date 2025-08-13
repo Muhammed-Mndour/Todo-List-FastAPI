@@ -16,7 +16,6 @@ A clean, production-minded FastAPI **ToDoList**  implementing categories, tasks,
 * [Architecture & repo layout](#architecture--repo-layout)
 * [APIs (quick reference)](#apis-quick-reference)
 * [Testing & quality](#testing--quality)
-* [Examples (curl)](#examples-curl)
 * [What I learned](#what-i-learned)
 
 
@@ -30,7 +29,7 @@ This repository contains a small but realistic FastAPI-based ToDoList Applicatio
 * **Domain & data layers** (business logic + DB entities)
 * **Clear request context** (header-driven `X-User-Code` to identify users)
 * Docker compose and dev tooling for easy local setup
-
+---
 ## Features
 
 * Create / read / update / delete categories and tasks
@@ -38,6 +37,7 @@ This repository contains a small but realistic FastAPI-based ToDoList Applicatio
 * Priorities & statuses as first-class objects
 * Unit tests and CI-friendly scripts
 * Clean separation: `apptodolist` (API) + `libtodolist` (domain + data) + `libutil`
+---
 
 ## Architecture & repo layout
 
@@ -62,6 +62,7 @@ Top-level tree (reduced):
 
 `libtodolist` contains: `data/entities` (DB operations), `domain` (business logic), and `messages` (DTOs).
 
+---
 ## APIs (quick reference)
 
 **Header**: every request must include `X-User-Code: <string>`
@@ -85,6 +86,8 @@ Example response lists and error shapes are implemented consistently as `{ succe
 
 Response and error examples follow the same uniform envelope used by categories.
 
+---
+
 ## Running tests & static checks
 
 * Tests: `pytest -q`
@@ -93,34 +96,7 @@ Response and error examples follow the same uniform envelope used by categories.
 
 The project includes unit tests under `tests/todolist` and pytest fixtures for DB isolation.
 
-## Examples (curl)
-
-Add category:
-
-```bash
-curl -X POST "http://localhost:8000/v1/categories" \
-  -H "Content-Type: application/json" \
-  -H "X-User-Code: U1234" \
-  -d '{"label":"Work"}'
-```
-
-Create task:
-
-```bash
-curl -X POST "http://localhost:8000/v1/tasks" \
-  -H "Content-Type: application/json" \
-  -H "X-User-Code: U1234" \
-  -d '{
-    "title":"Home work",
-    "description":"Home work",
-    "priority_code":"P0001",
-    "status_code":"S4589045",
-    "category_code":"C1752504942590",
-    "due_date":"2025-07-23"
-  }'
-```
-
-Errors are returned with `success: false` and a helpful `message` field (e.g. `"label must be alphanumeric"`).
+---
 
 ## What I learned
 

@@ -84,3 +84,15 @@ def delete_category_by_code(conn, code):
         ''',
         code=code,
     )
+
+
+def get_by_label(conn, label):
+    return sql(
+        conn,
+        '''
+        SELECT id_category, code, label
+        FROM category
+        WHERE label = :label
+    ''',
+        label=label,
+    ).dict()
