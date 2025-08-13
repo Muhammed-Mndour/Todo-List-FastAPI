@@ -285,7 +285,7 @@ POST /v1/tasks
 {
   "success": false,
   "code": 400,
-  "message": "title must not be empty"
+  "message": "Value error, title must not be empty"
 }
 ```
 

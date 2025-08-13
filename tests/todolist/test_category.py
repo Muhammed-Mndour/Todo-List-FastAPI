@@ -126,7 +126,7 @@ def test_delete_category_returns_200(app_todolist):
     assert res.status_code == 200
     assert res.json() == {"success": True, "code": 200, "message": "Category deleted successfully!", "data": {}}
     with TodolistSession() as session:
-        category = CategoryTable.get_by_code(session.conn, category_code,True)
+        category = CategoryTable.get_by_code(session.conn, category_code, True)
     assert category is None
 
 

@@ -187,7 +187,7 @@ class DeleteTask(BaseModel):
         entities.task.delete_task_by_code(session.conn, self.code)
 
     def _validate(self, conn, id_user, code):
-        task = entities.task.get_all_user_tasks(conn, task_code=code)
+        task = entities.task.get_a_user_task(conn, code)
         if not task:
             raise TaskValidationException(f"Task {code} does not exist!")
         if task['id_user'] != id_user:
