@@ -1,6 +1,5 @@
-# def test_post_category(app_todolist):
-#     response = app_todolist.post("/v1/categories/", headers={"X-User-Code": "mhmd"}, json={'label': 'Work'})
-
+import random
+from http import HTTPStatus
 
 # -----------------------------
 # Read
@@ -44,8 +43,6 @@ categories = [
     "Finance",
     "Hobbies",
 ]
-
-import random
 
 
 def test_post_category_creates_and_returns_200(app_todolist):
@@ -103,6 +100,16 @@ def test_put_category_returns_400_when_missing(app_todolist):
     body = res.json()
     assert body["success"] is False
     assert body["message"] == "Category fffffff does not exist!"
+
+
+def test_put_category_returns_bad_request(app_todolist):
+    invalid_category_code = 'invalid_category_code'
+    headers = {"X-User-Code": "mhmd"}
+    res = app_todolist.put(f"/v1/categories/{invalid_category_code}/", headers=headers, json={"label": "nope"})
+    assert res.status_code == HTTPStatus.BAD_REQUEST
+    body = res.json()
+    assert body["success"] is False
+    assert body["message"] == f"Category {invalid_category_code} does not exist!"
 
 
 # -----------------------------
